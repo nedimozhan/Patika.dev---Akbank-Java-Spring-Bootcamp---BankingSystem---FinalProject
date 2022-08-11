@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper
+	namespace="com.ned.finalProject.repository.ILocalUserRepository">
+
+	<select id="getUserById"
+		resultType="com.ned.finalProject.model.User">
+		SELECT * FROM user WHERE id= #{id}
+	</select>
+
+	<select id="getUserByUsername"
+		resultType="com.ned.finalProject.model.User">
+		SELECT * FROM user WHERE username = #{username}
+	</select>
+	
+	<select id="getUserByEmail"
+		resultType="com.ned.finalProject.model.User">
+		SELECT * FROM user WHERE email = #{email}
+	</select>
+
+	<insert id="insertUser"	parameterType="com.ned.finalProject.model.User"	useGeneratedKeys="true" keyProperty="user.id" keyColumn="id">
+		INSERT INTO user(username, email, password, enabled,authorities)
+		VALUES(#{user.username}, #{user.email}, #{user.password}, #{user.enabled}, #{user.authorities})
+	</insert>
+	
+	<update id="updateUser" parameterType="com.ned.finalProject.model.User">
+	    UPDATE user SET username = #{user.username}, password = #{user.password}, email = #{user.email} ,enabled = #{user.enabled} ,authorities = #{user.authorities}
+	    WHERE id = #{user.id}
+    </update>
+
+</mapper>	

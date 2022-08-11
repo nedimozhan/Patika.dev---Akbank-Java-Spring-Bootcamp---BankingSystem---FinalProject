@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.ned.finalProject.repository.ILocalAccountRepository">
+    
+    <select id="getAccountById" resultType="com.ned.finalProject.model.Account" >
+    	SELECT * FROM account WHERE id= #{id}
+    </select>
+    
+    <select id="getAccountByNumber" resultType="com.ned.finalProject.model.Account" >
+    	SELECT * FROM account WHERE number= #{number}
+    </select>
+    
+    <insert id="createAccount" parameterType="com.ned.finalProject.model.Account"  useGeneratedKeys="true">
+		INSERT INTO account(userId, bankId, number, type, balance, creationDate, lastUpdateDate, isDeleted) 
+		VALUES(#{account.userId}, #{account.bankId}, #{account.number}, #{account.type}, #{account.balance}, #{account.creationDate}, #{account.lastUpdateDate}, #{account.isDeleted})
+	</insert>
+    
+    <update id="updateAccount" parameterType="com.ned.finalProject.model.Account">
+	    UPDATE account SET userId = #{account.userId}, bankId = #{account.bankId}, number = #{account.number} ,type = #{account.type} ,balance = #{account.balance} ,
+	    creationDate = #{account.creationDate} ,lastUpdateDate = #{account.lastUpdateDate}, isDeleted = #{account.isDeleted}
+	    WHERE id = #{account.id}
+    </update>
+    
+    <!-- 
+     <update id="depositAccount" parameterType="com.ned.finalProject.model.Account">
+	    UPDATE account SET balance = #{balance}, lastUpdateDate = #{lastUpdateDate}	WHERE id = #{id}
+    </update>
+    
+     -->
+    
+    <update id="depositAccount" parameterType="com.ned.finalProject.model.Account">
+	    UPDATE account SET balance = #{account.balance}, lastUpdateDate = #{account.lastUpdateDate}	WHERE id = #{account.id}
+    </update>
+    
+    <update id="deleteAccount" parameterType="com.ned.finalProject.model.Account">
+	    UPDATE account SET isDeleted = #{isDeleted}	WHERE id = #{id}
+    </update>
+    
+</mapper>	

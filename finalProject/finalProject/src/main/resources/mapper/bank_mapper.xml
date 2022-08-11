@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace = "com.ned.finalProject.repository.ILocalBankRepository">
+    
+    <select id="getDataById" resultType="com.ned.finalProject.model.Bank" >
+    	SELECT * FROM bank WHERE id= #{id}
+    </select>
+    
+    <select id="getDataByName" resultType="com.ned.finalProject.model.Bank" >
+    	SELECT * FROM bank WHERE name= #{name}
+    </select>
+    
+    <insert id="insertData" parameterType="com.ned.finalProject.model.Bank"  useGeneratedKeys="true" keyProperty="bank.id" keyColumn="id">
+		INSERT INTO bank(name) 
+		VALUES(#{bank.name})
+	</insert>
+    
+</mapper>	
