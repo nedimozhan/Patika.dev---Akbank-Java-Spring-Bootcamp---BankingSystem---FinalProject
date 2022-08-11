@@ -18,6 +18,8 @@ import com.ned.finalProject.exception.AccountAccessDeniedException;
 import com.ned.finalProject.exception.AccountAccessDeniedResponse;
 import com.ned.finalProject.exception.AccountNotFoundException;
 import com.ned.finalProject.exception.AccountNotFoundResponse;
+import com.ned.finalProject.exception.AccountTypeInvalidException;
+import com.ned.finalProject.exception.AccountTypeInvalidResponse;
 import com.ned.finalProject.exception.UnknownErrorException;
 import com.ned.finalProject.exception.UnknownErrorResponse;
 import com.ned.finalProject.model.Account;
@@ -53,13 +55,27 @@ public class AccountController {
 		this.accountDepositService = accountDepositService;
 		this.accountRelationUserControlService = accountRelationUserControlService;
 	}
-
+	
+	
+	/*
+	 * Create account with bank id and bank type
+	 * Another columns (user id,balance,isDeleted,creation date,update date) set automatically
+	 */
 	@PostMapping(path = "/accounts")
 	public ResponseEntity<?> createAccount(@RequestBody AccountCreateRequest request) {
 
-		Account account = this.accountCreateService.createAccount(request);
-		AccountCreateSuccessResponse accountCreateSuccessResponse = new AccountCreateSuccessResponse(account);
-		return new ResponseEntity<>(accountCreateSuccessResponse, null, HttpStatus.CREATED);
+		try {
+			Account account = this.accountCreateService.createAccount(request);
+			AccountCreateSuccessResponse accountCreateSuccessResponse = new AccountCreateSuccessResponse(account);
+			return new ResponseEntity<>(accountCreateSuccessResponse, null, HttpStatus.CREATED);
+		} catch (AccountTypeInvalidException e) {
+			AccountTypeInvalidResponse accountTypeInvalidResponse = new AccountTypeInvalidResponse(e.getMessage());
+			return new ResponseEntity<>(accountTypeInvalidResponse, null, HttpStatus.BAD_REQUEST);
+		} catch (UnknownErrorException e) {
+			UnknownErrorResponse unknownErrorResponse = new UnknownErrorResponse();
+			return new ResponseEntity<>(unknownErrorResponse, null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
 
 	@GetMapping(path = "/accounts/{id}")
@@ -80,10 +96,10 @@ public class AccountController {
 		AccountRemoveSuccessResponse accountRemoveSuccessResponse = new AccountRemoveSuccessResponse();
 		return new ResponseEntity<>(accountRemoveSuccessResponse, null, HttpStatus.OK);
 	}
-	
+
 	/*
-	 *  Deposite money to account that given id 
-	 *  RequestBody include amount for the deposit action
+	 * Deposite money to account that given id RequestBody include amount for the
+	 * deposit action
 	 */
 	@PatchMapping("/accounts/{id}")
 	public ResponseEntity<?> depositAccount(@PathVariable int id,
@@ -91,7 +107,8 @@ public class AccountController {
 
 		try {
 			Account account = this.accountDepositService.depositAccount(id, accountDepositRequest.getAmount());
-			AccountDepositSuccessResponse accountDepositSuccessResponse = new AccountDepositSuccessResponse(account.getBalance());
+			AccountDepositSuccessResponse accountDepositSuccessResponse = new AccountDepositSuccessResponse(
+					account.getBalance());
 			ResponseEntity<?> responseEntity = new ResponseEntity<>(accountDepositSuccessResponse, null, HttpStatus.OK);
 			responseEntity.ok().lastModified(account.getLastUpdatedDate().getTime());
 			return responseEntity;
