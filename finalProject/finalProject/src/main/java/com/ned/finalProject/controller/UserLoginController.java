@@ -29,26 +29,35 @@ public class UserLoginController {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	
+	
+	/*
+	 * Login username and password
+	 * User cant login if user is in disable situation
+	 */
 	@PostMapping("/auth")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
 		
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+			
+			final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
+			
+			//Control if user is enable or disable
+			if(userDetails.isEnabled() == false) {
+				return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
+			}
+			
+			// Generate JWT Token
+			final String token = jwtTokenUtil.generateToken(userDetails);
+			UserLoginSuccess userLoginSuccess = new UserLoginSuccess(token);
+			
+			return new ResponseEntity<>(userLoginSuccess, null, HttpStatus.OK);
+			
+		
 		} catch (BadCredentialsException e) {
 			return ResponseEntity.badRequest().build();
 		} catch (DisabledException e) {
-			
-		}
-		
-		final UserDetails userDetails = userDetailsService.loadUserByUsername(loginRequest.getUsername());
-		
-		if(userDetails.isEnabled() == false) {
 			return new ResponseEntity<>(null, null, HttpStatus.FORBIDDEN);
 		}
-		
-		final String token = jwtTokenUtil.generateToken(userDetails);
-		UserLoginSuccess userLoginSuccess = new UserLoginSuccess(token);
-		
-		return new ResponseEntity<>(userLoginSuccess, null, HttpStatus.OK);
 	}
 }
