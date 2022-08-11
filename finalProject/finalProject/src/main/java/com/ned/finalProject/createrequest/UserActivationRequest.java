@@ -2,21 +2,18 @@ package com.ned.finalProject.createrequest;
 
 public class UserActivationRequest {
 
-	private String enabled;
-	
+	private boolean enabled;
+
 	public UserActivationRequest() {
-	
-	}
-	
-	public UserActivationRequest(String enabled) {
-		this.enabled = enabled;
+
 	}
 
-	public String getEnabled() {
+	public boolean isEnabled() {
 		return enabled;
 	}
 
-	public void setEnabled(String enabled) {
+	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
 }

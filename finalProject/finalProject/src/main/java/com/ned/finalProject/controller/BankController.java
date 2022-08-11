@@ -18,12 +18,12 @@ import com.ned.finalProject.service.IBankCreateService;
 import com.ned.finalProject.successresponse.BankCreateSuccessResponse;
 
 @RestController
-public class AdminController {
+public class BankController {
 
 	private IBankCreateService bankCreateService;
 
 	@Autowired
-	public AdminController(@Qualifier("BankCreateService") IBankCreateService bankCreateService) {
+	public BankController(@Qualifier("BankCreateService") IBankCreateService bankCreateService) {
 		this.bankCreateService = bankCreateService;
 	}
 
