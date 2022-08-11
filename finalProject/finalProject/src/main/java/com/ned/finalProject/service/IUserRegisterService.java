@@ -5,6 +5,5 @@ import com.ned.finalProject.model.User;
 import com.ned.finalProject.successresponse.UserCreateSuccess;
 
 public interface IUserRegisterService {
-	public UserCreateSuccess insertUser(UserRegisterRequest userRegisterRequest);
-	public User getDataById(int id);
+	public User insertUser(UserRegisterRequest userRegisterRequest);
 }

@@ -1,11 +1,11 @@
 package com.ned.finalProject.exception;
 
-public class UsernamePasswordEmailAlreadyUsedResponse {
+public class UsernameEmailAlreadyUsedResponse {
 	
 	private String message;
 	private boolean success;
 	
-	public UsernamePasswordEmailAlreadyUsedResponse(String message) {
+	public UsernameEmailAlreadyUsedResponse(String message) {
 		this.success = false;
 		this.message = "Given username or email already used : " + message;
 	}
