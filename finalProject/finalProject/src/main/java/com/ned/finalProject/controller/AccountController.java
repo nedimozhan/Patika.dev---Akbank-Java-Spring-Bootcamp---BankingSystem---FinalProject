@@ -55,11 +55,10 @@ public class AccountController {
 		this.accountDepositService = accountDepositService;
 		this.accountRelationUserControlService = accountRelationUserControlService;
 	}
-	
-	
+
 	/*
-	 * Create account with bank id and bank type
-	 * Another columns (user id,balance,isDeleted,creation date,update date) set automatically
+	 * Create account with bank id and bank type Another columns (user
+	 * id,balance,isDeleted,creation date,update date) set automatically
 	 */
 	@PostMapping(path = "/accounts")
 	public ResponseEntity<?> createAccount(@RequestBody AccountCreateRequest request) {

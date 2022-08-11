@@ -11,7 +11,7 @@
     	SELECT * FROM account WHERE number= #{number}
     </select>
     
-    <insert id="createAccount" parameterType="com.ned.finalProject.model.Account"  useGeneratedKeys="true">
+    <insert id="createAccount" parameterType="com.ned.finalProject.model.Account"  useGeneratedKeys="true" keyProperty="account.id" keyColumn="id">
 		INSERT INTO account(userId, bankId, number, type, balance, creationDate, lastUpdateDate, isDeleted) 
 		VALUES(#{account.userId}, #{account.bankId}, #{account.number}, #{account.type}, #{account.balance}, #{account.creationDate}, #{account.lastUpdateDate}, #{account.isDeleted})
 	</insert>

@@ -10,7 +10,7 @@ public class AccountCreateRequest {
 	}
 
 	public int getBankId() {
-		return bankId;
+		return this.bankId;
 	}
 
 	public void setBankId(int bankId) {
