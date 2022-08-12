@@ -59,6 +59,7 @@ public class JWTSecurityConfig extends WebSecurityConfigurerAdapter{
 		.antMatchers(HttpMethod.PATCH, "/users/{id}").hasAuthority(EAuthorities.ACTIVATE_DEACTIVATE_USER.toString())
 		.antMatchers(HttpMethod.POST, "/accounts").hasAuthority(EAuthorities.CREATE_ACCOUNT.toString())
 		.antMatchers(HttpMethod.POST, "/banks").hasAuthority(EAuthorities.CREATE_BANK.toString())
+		.antMatchers(HttpMethod.DELETE, "/accounts/{id}").hasAuthority(EAuthorities.REMOVE_ACCOUNT.toString())
 		.anyRequest().authenticated()
 		.and()
 		.sessionManagement()

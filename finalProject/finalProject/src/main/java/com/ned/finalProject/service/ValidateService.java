@@ -14,18 +14,20 @@ import com.ned.finalProject.repository.ILocalAccountRepository;
 import com.ned.finalProject.repository.ILocalUserRepository;
 
 @Component
-@Qualifier("AccountRelationUserControlService")
-public class AccountRelationUserControlService implements IAccountRelationUserControlService {
+@Qualifier("ValidateService")
+public class ValidateService implements IValidateService {
 
 	private ILocalAccountRepository localAccountRepository;
 	private ILocalUserRepository localUserRepository;
 
-	public AccountRelationUserControlService(ILocalAccountRepository localAccountRepository,
-			ILocalUserRepository localUserRepository) {
+	public ValidateService(ILocalAccountRepository localAccountRepository, ILocalUserRepository localUserRepository) {
 		this.localAccountRepository = localAccountRepository;
 		this.localUserRepository = localUserRepository;
 	}
 
+	/*
+	 * Control Account is found && Account.userId equals to User.Id
+	 */
 	@Override
 	public boolean isAccountRelatedToUser(int accountId) {
 
@@ -48,13 +50,34 @@ public class AccountRelationUserControlService implements IAccountRelationUserCo
 			}
 
 		} catch (AccountNotFoundException e) {
-			throw new AccountNotFoundException();
-		}catch (AccountAccessDeniedException e) {
-			throw new AccountAccessDeniedException();
-		}
-		catch (UnknownErrorException e) {
+			throw e;
+		} catch (AccountAccessDeniedException e) {
+			throw e;
+		} catch (UnknownErrorException e) {
 			throw new UnknownErrorException();
 		}
 
 	}
+
+	/*
+	 * Control Account is found
+	 */
+	@Override
+	public boolean isAccountFound(int accountId) {
+
+		try {
+			Account account = (Account) this.localAccountRepository.getAccountById(accountId);
+
+			if (account == null) {
+				throw new AccountNotFoundException();
+			}
+			return true;
+		} catch (AccountNotFoundException e) {
+			throw e;
+		} catch (UnknownErrorException e) {
+			throw new UnknownErrorException();
+		}
+
+	}
+
 }

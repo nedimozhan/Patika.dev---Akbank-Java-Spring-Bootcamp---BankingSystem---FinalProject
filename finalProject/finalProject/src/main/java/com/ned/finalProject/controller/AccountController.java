@@ -27,7 +27,7 @@ import com.ned.finalProject.service.AccountCreateService;
 import com.ned.finalProject.service.IAccountCreateService;
 import com.ned.finalProject.service.IAccountDepositService;
 import com.ned.finalProject.service.IAccountDetailService;
-import com.ned.finalProject.service.IAccountRelationUserControlService;
+import com.ned.finalProject.service.IValidateService;
 import com.ned.finalProject.service.IAccountRemoveService;
 import com.ned.finalProject.successresponse.AccountCreateSuccessResponse;
 import com.ned.finalProject.successresponse.AccountDepositSuccessResponse;
@@ -41,19 +41,19 @@ public class AccountController {
 	private IAccountDetailService accountDetailService;
 	private IAccountRemoveService accountRemoveService;
 	private IAccountDepositService accountDepositService;
-	private IAccountRelationUserControlService accountRelationUserControlService;
+	private IValidateService validateService;
 
 	@Autowired
 	public AccountController(@Qualifier("AccountCreateService") IAccountCreateService accountCreateService,
 			@Qualifier("AccountDetailService") IAccountDetailService accountDetailService,
 			@Qualifier("AccountRemoveService") IAccountRemoveService accountRemoveService,
 			@Qualifier("AccountDepositService") IAccountDepositService accountDepositService,
-			@Qualifier("AccountRelationUserControlService") IAccountRelationUserControlService accountRelationUserControlService) {
+			@Qualifier("ValidateService") IValidateService validateService) {
 		this.accountCreateService = accountCreateService;
 		this.accountDetailService = accountDetailService;
 		this.accountRemoveService = accountRemoveService;
 		this.accountDepositService = accountDepositService;
-		this.accountRelationUserControlService = accountRelationUserControlService;
+		this.validateService = validateService;
 	}
 
 	/*
@@ -85,7 +85,7 @@ public class AccountController {
 
 		try {
 			// Control User id and Account.UserID
-			this.accountRelationUserControlService.isAccountRelatedToUser(id);
+			this.validateService.isAccountRelatedToUser(id);
 
 			Account account = this.accountDetailService.accountDetail(id);
 			AccountDetailSuccessResponse accountDetailSuccessResponse = new AccountDetailSuccessResponse(account);
@@ -105,12 +105,28 @@ public class AccountController {
 
 	}
 
+	/*
+	 * Remove account by user who has REMOVE_ACCOUNT authority
+	 */
 	@DeleteMapping("/accounts/{id}")
 	public ResponseEntity<?> removeAccount(@PathVariable int id) {
 
-		this.accountRemoveService.removeAccount(id);
-		AccountRemoveSuccessResponse accountRemoveSuccessResponse = new AccountRemoveSuccessResponse();
-		return new ResponseEntity<>(accountRemoveSuccessResponse, null, HttpStatus.OK);
+		try {
+			// Control is there an account
+			this.validateService.isAccountFound(id);
+
+			this.accountRemoveService.removeAccount(id);
+			AccountRemoveSuccessResponse accountRemoveSuccessResponse = new AccountRemoveSuccessResponse();
+			return new ResponseEntity<>(accountRemoveSuccessResponse, null, HttpStatus.OK);
+		} catch (AccountNotFoundException e) {
+			AccountNotFoundResponse accountNotFoundResponse = new AccountNotFoundResponse();
+			return new ResponseEntity<>(accountNotFoundResponse, null, HttpStatus.NOT_FOUND);
+
+		} catch (UnknownErrorException e) {
+			UnknownErrorResponse unknownErrorResponse = new UnknownErrorResponse();
+			return new ResponseEntity<>(unknownErrorResponse, null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
 
 	/*
