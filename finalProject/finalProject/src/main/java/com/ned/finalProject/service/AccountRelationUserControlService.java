@@ -47,7 +47,12 @@ public class AccountRelationUserControlService implements IAccountRelationUserCo
 				throw new AccountAccessDeniedException();
 			}
 
-		} catch (Exception e) {
+		} catch (AccountNotFoundException e) {
+			throw new AccountNotFoundException();
+		}catch (AccountAccessDeniedException e) {
+			throw new AccountAccessDeniedException();
+		}
+		catch (UnknownErrorException e) {
 			throw new UnknownErrorException();
 		}
 

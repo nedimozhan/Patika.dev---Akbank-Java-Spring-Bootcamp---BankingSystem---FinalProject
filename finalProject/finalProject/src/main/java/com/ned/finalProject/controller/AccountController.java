@@ -77,15 +77,32 @@ public class AccountController {
 
 	}
 
+	/*
+	 * Show account detail if user id and account.user id can matching
+	 */
 	@GetMapping(path = "/accounts/{id}")
 	public ResponseEntity<?> accountDetail(@PathVariable int id) {
 
-		Account account = this.accountDetailService.accountDetail(id);
-		AccountDetailSuccessResponse accountDetailSuccessResponse = new AccountDetailSuccessResponse(account);
+		try {
+			// Control User id and Account.UserID
+			this.accountRelationUserControlService.isAccountRelatedToUser(id);
 
-		ResponseEntity<?> responseEntity = new ResponseEntity<>(accountDetailSuccessResponse, null, HttpStatus.OK);
-		responseEntity.ok().lastModified(account.getLastUpdatedDate().getTime());
-		return responseEntity;
+			Account account = this.accountDetailService.accountDetail(id);
+			AccountDetailSuccessResponse accountDetailSuccessResponse = new AccountDetailSuccessResponse(account);
+			ResponseEntity<?> responseEntity = new ResponseEntity<>(accountDetailSuccessResponse, null, HttpStatus.OK);
+			responseEntity.ok().lastModified(account.getLastUpdatedDate().getTime());
+			return responseEntity;
+		} catch (AccountAccessDeniedException e) {
+			AccountAccessDeniedResponse accessDeniedResponse = new AccountAccessDeniedResponse();
+			return new ResponseEntity<>(accessDeniedResponse, null, HttpStatus.FORBIDDEN);
+		} catch (AccountNotFoundException e) {
+			AccountNotFoundResponse accountNotFoundResponse = new AccountNotFoundResponse();
+			return new ResponseEntity<>(accountNotFoundResponse, null, HttpStatus.NOT_FOUND);
+		} catch (UnknownErrorException e) {
+			UnknownErrorResponse unknownErrorResponse = new UnknownErrorResponse();
+			return new ResponseEntity<>(unknownErrorResponse, null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
 	}
 
 	@DeleteMapping("/accounts/{id}")
