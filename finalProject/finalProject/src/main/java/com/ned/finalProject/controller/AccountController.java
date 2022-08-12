@@ -23,12 +23,11 @@ import com.ned.finalProject.exception.AccountTypeInvalidResponse;
 import com.ned.finalProject.exception.UnknownErrorException;
 import com.ned.finalProject.exception.UnknownErrorResponse;
 import com.ned.finalProject.model.Account;
-import com.ned.finalProject.service.AccountCreateService;
 import com.ned.finalProject.service.IAccountCreateService;
 import com.ned.finalProject.service.IAccountDepositService;
 import com.ned.finalProject.service.IAccountDetailService;
-import com.ned.finalProject.service.IValidateService;
 import com.ned.finalProject.service.IAccountRemoveService;
+import com.ned.finalProject.service.IValidateService;
 import com.ned.finalProject.successresponse.AccountCreateSuccessResponse;
 import com.ned.finalProject.successresponse.AccountDepositSuccessResponse;
 import com.ned.finalProject.successresponse.AccountDetailSuccessResponse;
@@ -114,7 +113,8 @@ public class AccountController {
 		try {
 			// Control is there an account
 			this.validateService.isAccountFound(id);
-
+			
+			// Remove account
 			this.accountRemoveService.removeAccount(id);
 			AccountRemoveSuccessResponse accountRemoveSuccessResponse = new AccountRemoveSuccessResponse();
 			return new ResponseEntity<>(accountRemoveSuccessResponse, null, HttpStatus.OK);
@@ -131,13 +131,16 @@ public class AccountController {
 
 	/*
 	 * Deposite money to account that given id RequestBody include amount for the
-	 * deposit action
+	 * deposit action. This method's web service is transactional
 	 */
 	@PatchMapping("/accounts/{id}")
 	public ResponseEntity<?> depositAccount(@PathVariable int id,
 			@RequestBody AccountDepositRequest accountDepositRequest) {
 
 		try {
+			
+			this.validateService.isAccountRelatedToUser(id);
+			
 			Account account = this.accountDepositService.depositAccount(id, accountDepositRequest.getAmount());
 			AccountDepositSuccessResponse accountDepositSuccessResponse = new AccountDepositSuccessResponse(
 					account.getBalance());

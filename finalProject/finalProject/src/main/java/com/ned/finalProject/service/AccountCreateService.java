@@ -33,7 +33,7 @@ public class AccountCreateService implements IAccountCreateService {
 
 	@Override
 	public Account createAccount(AccountCreateRequest accountCreateRequest) {
-		System.out.println("1111BANK ID REQUEST: " + accountCreateRequest.getBankId());
+		
 		String currency = "";
 
 		// Invalid type control

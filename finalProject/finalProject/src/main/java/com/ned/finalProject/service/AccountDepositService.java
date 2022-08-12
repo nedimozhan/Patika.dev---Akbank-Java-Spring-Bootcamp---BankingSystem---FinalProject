@@ -32,10 +32,6 @@ public class AccountDepositService implements IAccountDepositService {
 
 			Account account = this.localAccountRepository.getAccountById(id);
 
-			if (account == null) {
-				throw new AccountNotFoundException();
-			}
-
 			// Update Balance
 			float totalBalance = account.getBalance() + balance;
 			account.setBalance(totalBalance);
