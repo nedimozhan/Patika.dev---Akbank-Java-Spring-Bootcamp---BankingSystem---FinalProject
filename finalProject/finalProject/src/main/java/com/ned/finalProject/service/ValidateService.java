@@ -29,11 +29,11 @@ public class ValidateService implements IValidateService {
 	 * Control Account is found && Account.userId equals to User.Id
 	 */
 	@Override
-	public boolean isAccountRelatedToUser(int accountId) {
+	public boolean isAccountRelatedToUser(int id) {
 
 		try {
 
-			Account account = (Account) this.localAccountRepository.getAccountById(accountId);
+			Account account = this.localAccountRepository.getAccountById(id);
 
 			if (account == null) {
 				throw new AccountNotFoundException();
@@ -50,6 +50,7 @@ public class ValidateService implements IValidateService {
 			}
 
 		} catch (AccountNotFoundException e) {
+
 			throw e;
 		} catch (AccountAccessDeniedException e) {
 			throw e;
@@ -63,10 +64,10 @@ public class ValidateService implements IValidateService {
 	 * Control Account is found
 	 */
 	@Override
-	public boolean isAccountFound(int accountId) {
+	public boolean isAccountFound(int id) {
 
 		try {
-			Account account = (Account) this.localAccountRepository.getAccountById(accountId);
+			Account account = this.localAccountRepository.getAccountById(id);
 
 			if (account == null) {
 				throw new AccountNotFoundException();
