@@ -2,6 +2,7 @@ package com.ned.finalProject.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.ned.finalProject.createrequest.UserRegisterRequest;
@@ -16,11 +17,15 @@ import com.ned.finalProject.successresponse.UserCreateSuccess;
 public class UserRegisterService implements IUserRegisterService {
 
 	private ILocalUserRepository localUserRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	public UserRegisterService(ILocalUserRepository localUserRepository) {
 		this.localUserRepository = localUserRepository;
 	}
+	
 
 	@Override
 	public User insertUser(UserRegisterRequest userRegisterRequest) {
@@ -39,6 +44,8 @@ public class UserRegisterService implements IUserRegisterService {
 			throw new UsernameEmailAlreadyUsedException(userControlEmail.getEmail());
 		} else {
 			try {
+				String encodedPassword = this.passwordEncoder.encode(userRegisterRequest.getPassword());
+				userRegisterRequest.setPassword(encodedPassword);
 				User user = new User(userRegisterRequest);
 				this.localUserRepository.insertUser(user);
 				return user;

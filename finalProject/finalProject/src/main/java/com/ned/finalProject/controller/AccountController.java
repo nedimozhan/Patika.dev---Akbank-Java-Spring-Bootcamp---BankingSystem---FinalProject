@@ -99,6 +99,8 @@ public class AccountController {
 			Account account = this.accountDetailService.accountDetail(id);
 			AccountDetailSuccessResponse accountDetailSuccessResponse = new AccountDetailSuccessResponse(account);
 			ResponseEntity<?> responseEntity = new ResponseEntity<>(accountDetailSuccessResponse, null, HttpStatus.OK);
+			
+			// Update last Modified
 			responseEntity.ok().lastModified(account.getLastUpdatedDate().getTime());
 			return responseEntity;
 		} catch (AccountAccessDeniedException e) {
