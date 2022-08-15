@@ -4,12 +4,13 @@ import java.sql.Timestamp;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ned.finalProject.exception.AccountAccessDeniedException;
-import com.ned.finalProject.exception.AccountNotFoundException;
 import com.ned.finalProject.exception.UnknownErrorException;
+import com.ned.finalProject.log.AbstractLog;
+import com.ned.finalProject.log.DepositLog;
 import com.ned.finalProject.model.Account;
 import com.ned.finalProject.repository.ILocalAccountRepository;
 
@@ -18,10 +19,16 @@ import com.ned.finalProject.repository.ILocalAccountRepository;
 public class AccountDepositService implements IAccountDepositService {
 
 	private ILocalAccountRepository localAccountRepository;
-	
+	private KafkaTemplate<String, AbstractLog> producer;
+
 	@Autowired
 	public AccountDepositService(ILocalAccountRepository localAccountRepository) {
 		this.localAccountRepository = localAccountRepository;
+	}
+
+	@Autowired
+	public void setProducer(KafkaTemplate<String, AbstractLog> producer) {
+		this.producer = producer;
 	}
 
 	@Override
@@ -42,7 +49,11 @@ public class AccountDepositService implements IAccountDepositService {
 
 			// Update Account in Database
 			this.localAccountRepository.depositAccount(account);
-
+			
+			// Send to kafka
+			DepositLog depositLog = new DepositLog(balance, account.getNumber());
+			producer.send("logs", depositLog);
+			
 			return account;
 
 		} catch (Exception e) {
