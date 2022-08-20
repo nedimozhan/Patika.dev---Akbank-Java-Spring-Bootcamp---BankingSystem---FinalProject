@@ -1,17 +1,17 @@
-package com.ned.finalProject.exception;
+package com.ned.finalProject.errorresponse;
 
-public class UsernameEmailAlreadyUsedResponse {
-	
-	private String message;
+public class BankNameAlreadyUsedResponse {
+
 	private boolean success;
-	
-	public UsernameEmailAlreadyUsedResponse(String message) {
+	private String message;
+
+	public BankNameAlreadyUsedResponse(String message) {
+		this.message = "Given name Already Used : " + message;
 		this.success = false;
-		this.message = "Given username or email already used : " + message;
 	}
 
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
 	public void setMessage(String message) {

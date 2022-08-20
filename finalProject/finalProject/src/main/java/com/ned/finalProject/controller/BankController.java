@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ned.finalProject.createrequest.BankCreateRequest;
+import com.ned.finalProject.errorresponse.BankNameAlreadyUsedResponse;
+import com.ned.finalProject.errorresponse.UnknownErrorResponse;
 import com.ned.finalProject.exception.BankNameAlreadyUsedException;
-import com.ned.finalProject.exception.BankNameAlreadyUsedResponse;
 import com.ned.finalProject.exception.UnknownErrorException;
-import com.ned.finalProject.exception.UnknownErrorResponse;
 import com.ned.finalProject.model.Bank;
 import com.ned.finalProject.service.IBankCreateService;
 import com.ned.finalProject.successresponse.BankCreateSuccessResponse;

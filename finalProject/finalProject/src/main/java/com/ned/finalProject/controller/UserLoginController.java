@@ -35,7 +35,7 @@ public class UserLoginController {
 	private PasswordEncoder passwordEncoder;
 
 	/*
-	 * Login username and password User cant login if user is in disable situation
+	 * Login username and password. User cant login if user is in disable situation
 	 */
 	@PostMapping("/auth")
 	public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {

@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ned.finalProject.createrequest.UserActivationRequest;
+import com.ned.finalProject.errorresponse.UnknownErrorResponse;
+import com.ned.finalProject.errorresponse.UserNotFoundResponse;
 import com.ned.finalProject.exception.UnknownErrorException;
-import com.ned.finalProject.exception.UnknownErrorResponse;
 import com.ned.finalProject.exception.UserNotFoundException;
-import com.ned.finalProject.exception.UserNotFoundResponse;
 import com.ned.finalProject.service.IUserActivationService;
 import com.ned.finalProject.successresponse.UserActivationSuccessResponse;
 

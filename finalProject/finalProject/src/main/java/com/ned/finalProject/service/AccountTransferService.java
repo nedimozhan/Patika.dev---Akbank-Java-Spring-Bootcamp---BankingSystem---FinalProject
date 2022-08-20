@@ -41,7 +41,7 @@ public class AccountTransferService implements IAccountTransferService {
 	@Override
 	@Transactional
 	public void transferAccount(int senderId, AccountTransferRequest accountTransferRequest) {
-
+		
 		try {
 			Account senderAccount = this.localAccountRepository.getAccountById(senderId);
 			Account receiverAccount = this.localAccountRepository

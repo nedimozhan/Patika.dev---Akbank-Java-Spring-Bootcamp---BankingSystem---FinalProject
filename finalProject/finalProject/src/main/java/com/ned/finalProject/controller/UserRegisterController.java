@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ned.finalProject.createrequest.UserRegisterRequest;
+import com.ned.finalProject.errorresponse.UnknownErrorResponse;
+import com.ned.finalProject.errorresponse.UsernameEmailAlreadyUsedResponse;
 import com.ned.finalProject.exception.UnknownErrorException;
-import com.ned.finalProject.exception.UnknownErrorResponse;
 import com.ned.finalProject.exception.UsernameEmailAlreadyUsedException;
-import com.ned.finalProject.exception.UsernameEmailAlreadyUsedResponse;
 import com.ned.finalProject.model.User;
 import com.ned.finalProject.service.IUserRegisterService;
 import com.ned.finalProject.successresponse.UserCreateSuccess;

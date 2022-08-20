@@ -1,9 +1,12 @@
 package com.ned.finalProject.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,16 +19,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ned.finalProject.createrequest.AccountCreateRequest;
 import com.ned.finalProject.createrequest.AccountDepositRequest;
 import com.ned.finalProject.createrequest.AccountTransferRequest;
+import com.ned.finalProject.errorresponse.AccountAccessDeniedResponse;
+import com.ned.finalProject.errorresponse.AccountInsufficientBalanceResponse;
+import com.ned.finalProject.errorresponse.AccountNotFoundResponse;
+import com.ned.finalProject.errorresponse.AccountTypeInvalidResponse;
+import com.ned.finalProject.errorresponse.UnknownErrorResponse;
 import com.ned.finalProject.exception.AccountAccessDeniedException;
-import com.ned.finalProject.exception.AccountAccessDeniedResponse;
 import com.ned.finalProject.exception.AccountInsufficientBalanceException;
-import com.ned.finalProject.exception.AccountInsufficientBalanceResponse;
 import com.ned.finalProject.exception.AccountNotFoundException;
-import com.ned.finalProject.exception.AccountNotFoundResponse;
 import com.ned.finalProject.exception.AccountTypeInvalidException;
-import com.ned.finalProject.exception.AccountTypeInvalidResponse;
 import com.ned.finalProject.exception.UnknownErrorException;
-import com.ned.finalProject.exception.UnknownErrorResponse;
 import com.ned.finalProject.model.Account;
 import com.ned.finalProject.service.IAccountCreateService;
 import com.ned.finalProject.service.IAccountDepositService;
@@ -33,12 +36,14 @@ import com.ned.finalProject.service.IAccountDetailService;
 import com.ned.finalProject.service.IAccountRemoveService;
 import com.ned.finalProject.service.IAccountTransferService;
 import com.ned.finalProject.service.IValidateService;
+import com.ned.finalProject.successresponse.AccountAllDetailSuccessResponse;
 import com.ned.finalProject.successresponse.AccountCreateSuccessResponse;
 import com.ned.finalProject.successresponse.AccountDepositSuccessResponse;
 import com.ned.finalProject.successresponse.AccountDetailSuccessResponse;
 import com.ned.finalProject.successresponse.AccountRemoveSuccessResponse;
 import com.ned.finalProject.successresponse.AccountTransferSuccessResponse;
 
+@CrossOrigin
 @RestController
 public class AccountController {
 
@@ -115,6 +120,36 @@ public class AccountController {
 		}
 
 	}
+	
+	/*
+	 * Get User's all accounts
+	 */
+	@GetMapping(path = "/accounts/all")
+	public ResponseEntity<?> allAccountDetail() {
+
+		try {
+			// Control User id and Account.UserID
+			//this.validateService.isAccountRelatedToUser(id);
+
+			// Detail
+			List<Account> accounts = this.accountDetailService.allAccountByUserId();
+			AccountAllDetailSuccessResponse accountAllDetailSuccessResponse= new AccountAllDetailSuccessResponse(accounts);
+			ResponseEntity<?> responseEntity = new ResponseEntity<>(accountAllDetailSuccessResponse, null, HttpStatus.OK);
+			
+			return responseEntity;
+		} catch (AccountAccessDeniedException e) {
+			AccountAccessDeniedResponse accessDeniedResponse = new AccountAccessDeniedResponse();
+			return new ResponseEntity<>(accessDeniedResponse, null, HttpStatus.FORBIDDEN);
+		} catch (AccountNotFoundException e) {
+			AccountNotFoundResponse accountNotFoundResponse = new AccountNotFoundResponse();
+			return new ResponseEntity<>(accountNotFoundResponse, null, HttpStatus.NOT_FOUND);
+		} catch (UnknownErrorException e) {
+			UnknownErrorResponse unknownErrorResponse = new UnknownErrorResponse();
+			return new ResponseEntity<>(unknownErrorResponse, null, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+
+	}
+	
 
 	/*
 	 * Remove account by user who has REMOVE_ACCOUNT authority
@@ -178,10 +213,11 @@ public class AccountController {
 	 * sender and receiver have different currency types we should convert sender
 	 * types to receiver types
 	 */
+	//@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping("/accounts/{senderAccountId}")
 	public ResponseEntity<?> transferAccount(@PathVariable int senderAccountId,
 			@RequestBody AccountTransferRequest accountTransferRequest) {
-
+	
 		try {
 
 			// Validation

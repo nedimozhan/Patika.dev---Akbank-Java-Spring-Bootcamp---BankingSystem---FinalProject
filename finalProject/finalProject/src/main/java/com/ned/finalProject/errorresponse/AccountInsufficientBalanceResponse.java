@@ -1,4 +1,4 @@
-package com.ned.finalProject.exception;
+package com.ned.finalProject.errorresponse;
 
 public class AccountInsufficientBalanceResponse {
 
