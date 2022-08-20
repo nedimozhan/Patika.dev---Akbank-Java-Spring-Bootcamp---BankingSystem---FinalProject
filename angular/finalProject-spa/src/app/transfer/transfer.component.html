@@ -1,16 +1,19 @@
-<form #transferForm="ngForm" (ngSubmit)="transfer()" class="form-inline my-2 my-lg-0">
+<div>
+    <form #transferForm="ngForm" (ngSubmit)="transfer()" class="form-inline my-2 my-lg-0">
 
-    <input class="form-control mr-sm-2" name="yourId" [(ngModel)]="transferRequest.yourId" required type="number"
-        placeholder="Your Account Id">
-    <br />
-    <input class="form-control mr-sm-2" name="anotherId" [(ngModel)]="transferRequest.anotherId" required type="number"
-        placeholder="To Account Id">
-    <br />
-    <input class="form-control mr-sm-2" name="amount" [(ngModel)]="transferRequest.amount" required type="number"
-        placeholder="Amount">
-    <br />
+        <input class="form-control mr-sm-2" name="yourId" [(ngModel)]="transferRequest.yourId" required type="number"
+            placeholder="Your Account Id">
+        <br />
+        <input class="form-control mr-sm-2" name="anotherId" [(ngModel)]="transferRequest.anotherId" required type="number"
+            placeholder="To Account Id">
+        <br />
+        <input class="form-control mr-sm-2" name="amount" [(ngModel)]="transferRequest.amount" required type="number"
+            placeholder="Amount">
+        <br />
+    
+    
+    
+        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Transfer</button>
+    </form>
+</div>
 
-
-
-    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Transfer</button>
-</form>

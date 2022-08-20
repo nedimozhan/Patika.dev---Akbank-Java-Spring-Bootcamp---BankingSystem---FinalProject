@@ -1,6 +1,6 @@
 <h1>My Accounts</h1>
 
-<table>
+<table class="table">
 
   <tr>
     <th *ngFor="let column of headers">
@@ -9,7 +9,15 @@
   </tr>
 
   <tr *ngFor="let account of accounts">
-    <td>{{account.id}}</td>
+    <th>{{account.id}}</th>
+    <th>{{account.userId}}</th>
+    <th>{{account.bankId}}</th>
+    <th>{{account.number}}</th>
+    <th>{{account.type}}</th>
+    <th>{{account.balance}}</th>
+    <th>{{account.creationDate}}</th>
+    <th>{{account.deleted}}</th>
+    <th>{{account.lastUpdatedDate}}</th>
   </tr>
 
 </table>

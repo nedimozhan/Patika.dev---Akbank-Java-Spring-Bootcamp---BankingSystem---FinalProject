@@ -11,7 +11,7 @@ export class ListaccountService {
 
   constructor(private httpClient: HttpClient, private router: Router) { }
 
-  listAccounts():Observable<Account[]>{
+  listAccounts(){
       
     let path = "http://localhost:6060/accounts/all";
     let token = "Bearer " + localStorage.getItem("token");
@@ -19,7 +19,7 @@ export class ListaccountService {
     headers = headers.append("Content-Type", "application/json")
     headers = headers.append("Authorization", token)
 
-    return this.httpClient.get<Account[]>(path,{ headers: headers });
+    return this.httpClient.get<any>(path,{ headers: headers });
       
   }
 }

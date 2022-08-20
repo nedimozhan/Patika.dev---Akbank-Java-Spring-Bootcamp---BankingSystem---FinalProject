@@ -24,6 +24,8 @@ export class AccountdetailsComponent implements OnInit {
       (response)=>{
       //this.accountss=response[0];
       //console.log(response["accounts"]);
+      this.accounts=response["accounts"];
+      console.log(this.accounts);
     })
   }
 

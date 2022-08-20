@@ -1,8 +1,12 @@
-<form #loginForm="ngForm" (ngSubmit)="login()" class="form-inline my-2 my-lg-0">
+<div>
+        <form #loginForm="ngForm" (ngSubmit)="login()">
     
-        <input class="form-control mr-sm-2" name="username" [(ngModel)]="loginUser.username" required type="text" placeholder="Username">
-        <br />
-        <input class="form-control mr-sm-2" name="password" [(ngModel)]="loginUser.password" required type="password" placeholder="Password">
-        <br />
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
-</form>
+                <input class="fadeIn second" name="username" [(ngModel)]="loginUser.username" required type="text" placeholder="Username">
+                <br/>
+                <br/>
+                <input class="fadeIn second" name="password" [(ngModel)]="loginUser.password" required type="password" placeholder="Password">
+                <br/>
+                <br/>
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Login</button>
+        </form>
+</div>
