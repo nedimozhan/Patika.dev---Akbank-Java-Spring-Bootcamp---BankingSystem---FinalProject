@@ -22,8 +22,7 @@ export class TransferService {
     headers = headers.append("Authorization", token)
 
     this.httpClient.put<any>(path, {"amount" : transferRequest.amount,"receiverAccountId" : transferRequest.anotherId}, { headers: headers })
-      .subscribe(data => {
-        console.log(data.message);
-      })
+    .subscribe(data => console.log(data),
+    error => console.log(error));
   }
 }

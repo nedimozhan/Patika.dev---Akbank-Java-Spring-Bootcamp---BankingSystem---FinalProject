@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Account } from './Account';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +17,7 @@ export class ListaccountService {
     headers = headers.append("Content-Type", "application/json")
     headers = headers.append("Authorization", token)
 
-    return this.httpClient.get<any>(path,{ headers: headers });
+    return this.httpClient.get<any>(path,{ headers: headers })
       
   }
 }

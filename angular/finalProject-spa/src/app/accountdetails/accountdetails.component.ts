@@ -19,14 +19,20 @@ export class AccountdetailsComponent implements OnInit {
 
   }
 
+  //ngOnInit(): void {
+  //  this.listAccountService.listAccounts().subscribe(
+  //    (response)=>{
+  //    this.accounts=response["accounts"];
+  //    console.log(this.accounts);
+  //   
+  //  })
+ // }
+
   ngOnInit(): void {
     this.listAccountService.listAccounts().subscribe(
-      (response)=>{
-      //this.accountss=response[0];
-      //console.log(response["accounts"]);
-      this.accounts=response["accounts"];
-      console.log(this.accounts);
-    })
+      data => this.accounts=data[0],
+    error => console.log(error));
+      
+    
   }
-
 }

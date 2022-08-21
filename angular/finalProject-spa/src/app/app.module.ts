@@ -10,12 +10,14 @@ import { HomeComponent } from './home/home.component';
 import {RouterModule, Routes} from '@angular/router';
 import { TransferComponent } from './transfer/transfer.component';
 import { AccountdetailsComponent } from './accountdetails/accountdetails.component';
+import { RegisterComponent } from './register/register.component';
 
 const appRoute:Routes=[
   {path:'Home',component:HomeComponent},
   {path:'',component:LoginComponent},
   {path:'transfer',component:TransferComponent},
-  {path:'myaccounts',component:AccountdetailsComponent}
+  {path:'myaccounts',component:AccountdetailsComponent},
+  {path:'register',component:RegisterComponent}
 ]
 
 
@@ -25,7 +27,8 @@ const appRoute:Routes=[
     LoginComponent,
     HomeComponent,
     TransferComponent,
-    AccountdetailsComponent
+    AccountdetailsComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,

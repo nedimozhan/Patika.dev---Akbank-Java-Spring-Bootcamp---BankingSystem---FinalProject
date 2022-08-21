@@ -21,9 +21,9 @@ export class AuthService {
       .subscribe(data => {
         localStorage.setItem("token", data.token);
         this.userToken = data.token;
-        console.log(data.token);
+        console.log(data);
         this.router.navigateByUrl("Home");
-      })
+      },error => console.log(error))
   }
 
 

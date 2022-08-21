@@ -31,7 +31,7 @@ public class UserRegisterController {
 	 */
 	@PostMapping(path = "/register")
 	public ResponseEntity<?> userRegister(@RequestBody UserRegisterRequest request) {
-
+			System.out.println("IM HERE");
 		try {
 			User user = this.userRegisterService.insertUser(request);
 			UserCreateSuccess userCreateSuccess = new UserCreateSuccess(user);

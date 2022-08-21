@@ -1,0 +1,16 @@
+<div>
+    <form #registerForm="ngForm" (ngSubmit)="register()">
+
+            <input class="fadeIn second" name="username" [(ngModel)]="signUser.username" required type="text" placeholder="Username">
+            <br/>
+            <br/>
+            <input class="fadeIn second" name="password" [(ngModel)]="signUser.password" required type="password" placeholder="Password">
+            <br/>
+            <br/>
+            <input class="fadeIn second" name="password" [(ngModel)]="signUser.email" required type="text" placeholder="Email">
+            <br/>
+            <br/>
+
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Sign In</button>
+    </form>
+</div>
